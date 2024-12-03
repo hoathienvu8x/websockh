@@ -95,7 +95,11 @@ int send_handshake(websockh client, const char *host, const char *path, uint8_t 
 SSL_CTX *websockh_init_ssl_ctx(){
 	OpenSSL_add_all_algorithms();
 	SSL_load_error_strings();
+  #if (OPENSSL_VERSION_NUMBER < 0x10100000L)
 	SSL_CTX *ctx = SSL_CTX_new(TLSv1_2_client_method());
+  #else
+	SSL_CTX *ctx = SSL_CTX_new(TLS_client_method());
+  #endif
 	return ctx;
 }
 
